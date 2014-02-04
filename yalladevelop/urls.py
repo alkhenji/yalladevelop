@@ -8,6 +8,11 @@ from yalladevelop import views
 urlpatterns = patterns('',
 	# Examples: 
 	url(r'^$', views.index, name='index'), #links to Home page
+	url(r'^signup/$', views.signup_user, name="signup"),
+	url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'yalladevelop/login.html'}, name="login"),
+	url(r'^logout/$', views.logout_user, name="logout"),
+
+
 	# url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'Photographia/login.html'}, name="login"),
 	# url(r'^logout/$', views.logout_user, name="logout"),
 )

@@ -1,0 +1,11 @@
+{% load staticfiles %}
+
+<form method="post" action="{% url 'django.contrib.auth.views.login'  %}">
+	<h4> Please login below, or create an account if you don't have one </h4>
+	<p><label for='username'>Username</label><input type="text" name="username"/></p>
+	<p><label for='password'>Password</label><input type="password" name="password"/></p>
+	<p><input type="submit" value="Login" /><p>
+	{% csrf_token %}
+</form>
+
+<a href="/signup">Signup</a>
