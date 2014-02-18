@@ -5,10 +5,12 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Abdulla AlKhenji', 'al.khenji@gmail.com'),
 )
 
 MANAGERS = ADMINS
+
+AUTH_PROFILE_MODULE = 'yalladevelop.UserProfile'
 
 DATABASES = {
     'default': {
@@ -123,7 +125,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 	'yalladevelop',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )

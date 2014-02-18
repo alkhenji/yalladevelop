@@ -16,12 +16,35 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.core.context_processors import csrf
 from django.template import RequestContext
 
+#Models
+from yalladevelop.models import Project, Skill, UserProfile
+
 def index(request):
 	user = request.user
 	logged_in = request.user.is_authenticated()
 	not_logged_in = not logged_in
 	return render(request, 'yalladevelop/index.html', {'user':user,'logged_in':logged_in,'not_logged_in':not_logged_in})
 	
+def showProject(request,project_id):
+	project = Project.objects.filter(id=project_id)
+	if project:
+		project = project[0]
+		owner = User.objects.filter(id=project.user_id)[0]
+		return render(request,'yalladevelop/project.html', {'project':project, 'owner': owner})
+	else:
+		return render(request, 'yalladevelop/404.html')
+
+def showProfile(request,profile_id):
+	userProfile = UserProfile.objects.filter(id=profile_id)
+	if userProfile:
+		userProfile = userProfile[0]
+		userAccount = User.objects.get(id=profile_id)
+		skills = userProfile.skill.all()
+		return render(request,'yalladevelop/profile.html', {'userProfile': userProfile, 'skills':skills,'userAccount':userAccount})
+	else:
+		return render(request, 'yalladevelop/404.html')
+	
+# -------------------- Authentication ----------------------
 def signup(request):
 	return render(request, 'yalladevelop/signup.html', {})
 

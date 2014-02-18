@@ -1,0 +1,16 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>YallaDevelop!: Project Page</title>
+</head>
+<body>
+
+<h2> Project Name: {{ project }} </h2>
+<h3> Owned By: {{ owner }} <h3>
+<h3> Proposed Budget: ${{ project.target_money }} <h3>
+<h3> Actual Budget: ${{ project.money_collected }} <h3>
+
+</body>
+</html>
