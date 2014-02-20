@@ -13,4 +13,14 @@ urlpatterns = patterns('',
 	url(r'^logout/$', views.logout_user, name="logout"),
 	url(r'^project/(?P<project_id>\d+)/$', views.showProject, name='showProject'),
 	url(r'^profile/(?P<profile_id>\d+)/$', views.showProfile, name='showProfile'),
+	url(r'^profile/(?P<profile_id>\d+)/$', views.showProfile, name='showProfile'),
+
+	# Static Pages Dispatcher
+	url(r'^about/$', views.about, name="about"),
+	url(r'^contact/$', views.contact, name="contact"),
+	url(r'^faq/$', views.faq, name="faq"),
+	url(r'^help/$', views.help, name="help"),
+	url(r'^privacy/$', views.privacy, name="privacy"),
+	url(r'^sitemap/$', views.sitemap, name="sitemap"),
+	url(r'^terms/$', views.terms, name="terms"),
 )

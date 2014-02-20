@@ -18,6 +18,7 @@ from django.template import RequestContext
 
 #Models
 from yalladevelop.models import Project, Skill, UserProfile
+from yalladevelop.forms import UserCreateForm
 
 def index(request):
 	user = request.user
@@ -28,7 +29,7 @@ def index(request):
 def showProject(request,project_id):
 	project = Project.objects.filter(id=project_id)
 	if project:
-		project = project[0]
+		project = project[0] 
 		owner = User.objects.filter(id=project.user_id)[0]
 		return render(request,'yalladevelop/project.html', {'project':project, 'owner': owner})
 	else:
@@ -51,7 +52,8 @@ def signup(request):
 @csrf_exempt
 def signup_user(request):
 	if request.method == 'POST':
-		form = UserCreationForm(request.POST)
+		# form = UserCreationForm(request.POST)
+		form = UserCreateForm(request.POST)
 		if form.is_valid():
 			new_user = form.save()
 			new_user = authenticate(username=request.POST['username'],password=request.POST['password1'])
@@ -59,7 +61,8 @@ def signup_user(request):
 			url = reverse('index')
 			return HttpResponseRedirect(url)
 	else:
-		form = UserCreationForm()
+		# form = UserCreationForm()
+		form = UserCreateForm()
 	return render(request, "yalladevelop/signup.html", {'form': form})
 	
 def login_user(request):
@@ -74,3 +77,28 @@ def login_user(request):
 def logout_user(request):
 	logout(request)
 	return HttpResponseRedirect('/')
+	
+	
+	
+# -------------------- Static Pages -------------------------
+
+def about(request):
+	return render(request, 'yalladevelop/about.html', {})
+	
+def contact(request):
+	return render(request, 'yalladevelop/contact.html', {})
+
+def faq(request):
+	return render(request, 'yalladevelop/faq.html', {})
+	
+def help(request):
+	return render(request, 'yalladevelop/help.html', {})
+	
+def privacy(request):
+	return render(request, 'yalladevelop/privacy.html', {})
+	
+def sitemap(request):
+	return render(request, 'yalladevelop/sitemap.html', {})
+
+def terms(request):
+	return render(request, 'yalladevelop/terms.html', {})

@@ -7,11 +7,24 @@ from django.contrib.auth.models import User
 
 class Skill(models.Model):
 	# id built in
+	'''
+	a = "Python, Django"
+	b = "Java, Javascript"
+	c = "C, C++, C#"
+	d = "Ruby, Ruby on Rails"
+	e = "HTML, CSS"
+	f = "PHP"
+	g = "Perl"
+	h = "ASP & VBScript"
+	i = "Adobe Photoshop, Illustrator"
+	j = "SQL Databases"
+	'''
 	name = models.CharField(max_length=200)
 	description = models.CharField(max_length=200)
 	def __unicode__(self):
 		return self.name
-
+	
+		
 class UserProfile(models.Model):
 	# firstName Already Built in
 	# lastName Already Built in
