@@ -1,13 +1,4 @@
-{% load staticfiles %}
-
-<!DOCTYPE html>
-<html>
-<head>
-	<title>YallaDevelop!</title>
-</head>
-<body>
-	
-{% include "yalladevelop/_header.html" %}
+{% include "yalladevelop/header.html" %}
 
 <h1>Website Under Construction.</h1>
 
@@ -17,6 +8,6 @@
 	{% else %}
 		{% include 'yalladevelop/login.html' %}
 	{% endif %}
-
-</body>
-</html>
+	
+	
+{% include "yalladevelop/footer.html" %}

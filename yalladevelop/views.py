@@ -24,7 +24,7 @@ def index(request):
 	user = request.user
 	logged_in = request.user.is_authenticated()
 	not_logged_in = not logged_in
-	return render(request, 'yalladevelop/index.html', {'user':user,'logged_in':logged_in,'not_logged_in':not_logged_in})
+	return render(request, 'yalladevelop/index.html', {'user':user,'logged_in':logged_in,'not_logged_in':not_logged_in,'page_name':"Home"})
 	
 def showProject(request,project_id):
 	project = Project.objects.filter(id=project_id)
@@ -87,6 +87,9 @@ def about(request):
 	
 def contact(request):
 	return render(request, 'yalladevelop/contact.html', {})
+	
+def explore(request):
+	return render(request, 'yalladevelop/explore.html', {})
 
 def faq(request):
 	return render(request, 'yalladevelop/faq.html', {})
@@ -100,5 +103,11 @@ def privacy(request):
 def sitemap(request):
 	return render(request, 'yalladevelop/sitemap.html', {})
 
+def privacy(request):
+	return render(request, 'yalladevelop/privacy.html', {})
+
 def terms(request):
 	return render(request, 'yalladevelop/terms.html', {})
+
+def test(request):
+	return render(request, 'yalladevelop/111.html', {})

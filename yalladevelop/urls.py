@@ -18,9 +18,12 @@ urlpatterns = patterns('',
 	# Static Pages Dispatcher
 	url(r'^about/$', views.about, name="about"),
 	url(r'^contact/$', views.contact, name="contact"),
+	url(r'^explore/$', views.explore, name="explore"),
 	url(r'^faq/$', views.faq, name="faq"),
 	url(r'^help/$', views.help, name="help"),
 	url(r'^privacy/$', views.privacy, name="privacy"),
 	url(r'^sitemap/$', views.sitemap, name="sitemap"),
 	url(r'^terms/$', views.terms, name="terms"),
+	
+	url(r'^111/$', views.test, name="test"),
 )
