@@ -1,28 +1,20 @@
-{% load staticfiles %}
+{% include "yalladevelop/header.html" %}
 
-<!DOCTYPE html>
-<html>
-<head>
-	<title>YallaDevelop!: Project Page</title>
-</head>
-<body>
-
-<h2> Profile: {{ project }} </h2>
+<h1>Profile: </h1>
 	
 <h4>
 
-First: {{ userAccount.first }} <br />
-Last: {{ userAccount.last }} <br />
+Name: {{ userProfile.name }} <br />
+User: {{ userProfile.user }} <br />
 Email: {{ userAccount.email }} <br />
-is_staff: {{ userAccount.is_staff }} <br />
-is_active: {{ userProfile.is_active }} <br />
-is_premium: {{ userProfile.is_premium }} <br />
-is_company: {{ userProfile.is_company }} <br />
-skills: {{ skills }} <br />
-user: {{ userProfile.user }} <br />
-name: {{ userProfile.name }} <br />
+Is Staff?: {{ userAccount.is_staff }} <br />
+Is Premium?: {{ userProfile.is_premium }} <br />
+Is Company?: {{ userProfile.is_company }} <br />
+Skills: {{ skills }} <br />
+
+
 
 </h4>
 
-</body>
-</html>
+
+{% include "yalladevelop/footer.html" %}

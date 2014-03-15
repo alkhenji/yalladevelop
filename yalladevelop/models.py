@@ -23,7 +23,14 @@ class Skill(models.Model):
 	description = models.CharField(max_length=200)
 	def __unicode__(self):
 		return self.name
-	
+
+class Comments(models.Model):
+	project_id = models.IntegerField()
+	project_owner_id = models.IntegerField()
+	name = models.CharField(max_length=200)
+	comment = models.CharField(max_length=200)
+	def __unicode__(self):
+		return self.username
 		
 class UserProfile(models.Model):
 	# firstName Already Built in

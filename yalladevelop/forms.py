@@ -3,6 +3,21 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from yalladevelop.models import Skill, UserProfile
 
+from django.core.mail import send_mail
+
+class ContactForm(forms.Form):
+	name = forms.CharField(max_length=100)
+	subject = forms.CharField(max_length=100)
+	message = forms.CharField()
+	sender = forms.EmailField()
+	cc_myself = forms.BooleanField(label="CC Myself?",required=False)
+
+class AddForm(forms.Form):
+	project_name = forms.CharField(max_length=100, required=True)
+	description = forms.CharField(required=True)
+	target_money = forms.IntegerField(required=True)
+
+
 class UserCreateForm(UserCreationForm):
 	name = forms.CharField(max_length=200,help_text="First and Last name please.")
 	email = forms.EmailField(help_text="Enter your email address",required=True)
