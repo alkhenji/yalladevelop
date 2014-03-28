@@ -1,0 +1,38 @@
+{% include "yalladevelop/header.html" %}
+
+<h2> Ranking Page: </h2>
+
+<h4> Top 10 Companies </h4>
+	{% if top_companies %}
+		<ul>
+		{% for c in top_companies %}
+			<li>{{c.name}} | Score: {{c.points}}</li>
+		{% endfor %}
+		</ul>
+	{% else %}
+		<h6> No companies made it to the high scores yet. </h6>
+	{% endif %}
+
+<h4> Top 10 Users </h4>
+	{% if top_users %}
+		<ul>
+		{% for u in top_users %}
+			<li>{{u.name}} | Score: {{u.points}}</li>
+		{% endfor %}
+		</ul>
+	{% else %}
+		<h6> No users made it to the high scores yet. </h6>
+	{% endif %}
+
+<h4> Top 10 Projects </h4>
+	{% if top_projects %}
+		<ul>
+		{% for p in top_projects %}
+			<li>{{p.name}} | Likes: {{p.likes}}</li>
+		{% endfor %}
+		</ul>
+	{% else %}
+		<h6> No projects made it to the high scores yet. </h6>
+	{% endif %}
+
+{% include "yalladevelop/footer.html" %}

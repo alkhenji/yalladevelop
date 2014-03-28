@@ -24,14 +24,22 @@ class Skill(models.Model):
 	def __unicode__(self):
 		return self.name
 
-class Comments(models.Model):
+class Comment(models.Model):
 	project_id = models.IntegerField()
 	project_owner_id = models.IntegerField()
 	name = models.CharField(max_length=200)
 	comment = models.CharField(max_length=200)
 	def __unicode__(self):
 		return self.username
-		
+
+class Like(models.Model):
+	project_id = models.IntegerField()
+	user_id = models.IntegerField()
+	def __unicode__(self):
+		user_id = str(self.user_id)
+		project_id = str(self.project_id)
+		return "User %s likes Project %s" % (user_id, project_id)
+
 class UserProfile(models.Model):
 	# firstName Already Built in
 	# lastName Already Built in
@@ -44,6 +52,7 @@ class UserProfile(models.Model):
 	skill = models.ManyToManyField(Skill)
 	user = models.ForeignKey(User, unique=True)
 	name = models.CharField(max_length=200)
+	points = models.IntegerField(default=0)
 	def __unicode__(self):
 		return self.name
 
@@ -57,5 +66,6 @@ class Project(models.Model):
 	money_collected = models.IntegerField(default=0)
 	description = models.CharField(max_length=200)
 	completed = models.BooleanField(default=False)
+	is_featured = models.BooleanField(default=False)
 	def __unicode__(self):
 		return self.name

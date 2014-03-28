@@ -1,0 +1,13 @@
+{% include "yalladevelop/header.html" %}
+
+<h1>Profile Settings: </h1>
+	<h4>Note: type your old password to save the changes.</h4>
+	<form action="/profile_settings/" method="POST">
+		<h6>Username: <strong>{{user.username}}</strong></h6>
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="Submit" />
+	</form>
+<br/>
+
+{% include "yalladevelop/footer.html" %}

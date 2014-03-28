@@ -1,13 +1,5 @@
 {% include "yalladevelop/header.html" %}
 
 <h1>Website Under Construction.</h1>
-
-
-	{% if logged_in %}
-		<h3> Logged in as: {{ user }}  -- <a href='/logout'>Logout?</a></h3>
-	{% else %}
-		{% include 'yalladevelop/login.html' %}
-	{% endif %}
-	
 	
 {% include "yalladevelop/footer.html" %}

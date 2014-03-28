@@ -1,0 +1,41 @@
+{% include "yalladevelop/header.html" %}
+
+<h1>Profile Settings: </h1>
+
+	{% if is_company %}
+		<form action="/save_settings/" method="POST">
+			{%csrf_token%}
+			Username: <strong>{{user.username}}</strong><br/>
+			Name: <input type="text" name="firstname" value="{{user}}"><br/>
+			Email: <input type="email" name="email" value="{{user.email}}"><br/>
+			Old Password: <input type="password" name="password1"><br/>
+			New Password: <input type="password" name="password2"><br/>
+			Confirm Password: <input type="password" name="password3"><br/>
+			<input type="submit" value="Submit">
+		</form>
+	{% else %}
+		<form action="/save_settings/" method="POST">
+			{%csrf_token%}
+			Username: <strong>{{user.username}}</strong><br/>
+			Name: <input type="text" name="firstname" value="{{user_profile.name}}"><br/>
+			Old Password: <input type="password" name="password1"><br/>
+			New Password: <input type="password" name="password2"><br/>
+			Confirm Password: <input type="password" name="password3"><br/>
+			<!-- Skills -->
+			<h5>Warning: if you remove a skill you will still be part of the projects!</h5>
+			{% for skill in skills %}
+				{% if skill in user_skills %}
+					{{skill.name}}: <input type="checkbox" name="skill{{skill.id}}" checked="true"><br/>
+				{% else %}
+					{{skill.name}}: <input type="checkbox" name="skill{{skill.id}}"><br/>
+				{% endif %}
+
+			{% endfor %}
+			<input type="submit" value="Submit">
+		</form>
+	{% endif %}
+
+
+<br/>
+
+{% include "yalladevelop/footer.html" %}

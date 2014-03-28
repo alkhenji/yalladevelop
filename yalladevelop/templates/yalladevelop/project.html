@@ -4,23 +4,29 @@
 
 <h2> Project Name: {{ project }} </h2>
 <h3> Owned By: {{ owner }} <h3>
-<h3> Proposed Budget: $ {{ project.target_money }} <h3>
-<h3> Actual Budget: ${{ project.money_collected }} <h3>
+<h3> Target Money: ${{ project.target_money }} <h3>
+<h3> Money Collected: ${{ project.money_collected }} <h3>
+<h3> Likes: {{ project.likes }} <h3>
 	
-<div id="commentBox">
-	<h5>Your feedback is appreciated: </h5>	
-	
-	<div>
-		<label for='name'>Name:</label><input id="name"></input>
-	</div>
-	
-	<div>
-		<label for='content'>Your comment</label><textarea rows="10" cols="50" id="comment"></textarea>
-	</div>
-	
-	<div id="post_comment">
-		<a href="#" onclick="postComment(); return false;">Post Comment</a>
-	</div>
+
+<div>Progress: {{progress}}% Completed</div><br/>
+
+<div class="progress">
+	<div class="progress-bar" style="width: {{progress}}%;"></div>
 </div>
+
+{% if logged_in and not liked %}
+	<a href="/project/{{project.id}}/likeProject">I like This</a>
+	<button class="btn btn-danger">I Like This!</button>
+{% else %}
+	<button class="btn btn-default">Already Liked</button>
+{% endif %}
+
+<button class="btn btn-info">I Can Help!</button>
+
+<button class="btn btn-success">I Will Donate!</button>
+
+<br/><br/>
+
 
 {% include "yalladevelop/footer.html" %}

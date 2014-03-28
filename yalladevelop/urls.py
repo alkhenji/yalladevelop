@@ -6,7 +6,6 @@ from django.contrib.auth import authenticate, login
 from yalladevelop import views
 
 urlpatterns = patterns('',
-	# Examples: 
 	url(r'^$', views.index, name='index'), #links to Home page
 	url(r'^signup/$', views.signup_user, name="signup"),
 	url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'yalladevelop/login.html'}, name="login"),
@@ -14,10 +13,15 @@ urlpatterns = patterns('',
 	url(r'^project/(?P<project_id>\d+)/$', views.showProject, name='showProject'),
 	url(r'^profile/(?P<profile_id>\d+)/$', views.showProfile, name='showProfile'),
 	url(r'^profile/$', views.showProfile, name='showProfile'),
-	
 	url(r'^addproject/$', views.addProject, name='addProject'),
-	
-	url(r'^developerhelp/$', views.dhelp, name='dhelp'),
+	url(r'^forgotpassword/$', views.forgotPassword, name='forgotPassword'),
+	url(r'^profile_settings/$', views.profileSettings, name='profileSettings'),
+	# url(r'^save_settings/$', views.save_settings, name='save_settings'),
+	url(r'^project/(?P<project_id>\d+)/likeProject$', views.likeProject, name='likeProject'),
+	url(r'^userorcompany/$', views.userorcompany, name="userorcompany"),
+	url(r'^user-signup/$', views.signup_user, name="signup_user"),
+	url(r'^company-signup/$', views.signup_company, name="signup_company"),	
+	url(r'^rankings/$', views.rankings, name='rankings'),
 	
 	# Static Pages Dispatcher
 	url(r'^about/$', views.about, name="about"),
@@ -29,4 +33,7 @@ urlpatterns = patterns('',
 	url(r'^privacy/$', views.privacy, name="privacy"),
 	url(r'^sitemap/$', views.sitemap, name="sitemap"),
 	url(r'^terms/$', views.terms, name="terms"),
+		
+	# DEVELOEPR HELP
+	url(r'^developerhelp/$', views.dhelp, name='dhelp'),
 )

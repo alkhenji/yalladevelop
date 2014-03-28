@@ -1,11 +1,8 @@
 {% include "yalladevelop/header.html" %}
 
-{% if usersignup %}
-	<h2> Signup as an Individual: </h2>
-{% else %}
-	<h2> Signup as an Company: </h2>
-{% endif %}
+<h1> Signup as a Company: <h1>
 	
+	<h2>Create an account:</h2>
 		<form action="" method="post">
 			{{ form.as_p }}
 			<input type="submit" value="Create Account">
