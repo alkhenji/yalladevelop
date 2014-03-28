@@ -115,13 +115,21 @@ def showProject(request,project_id=-1):
 			d['project'] = project
 			d['owner'] = User.objects.get(id=project.user_id).username
 			d['progress'] = int(project.money_collected/project.target_money)
-			if True: # should be if logged in
+			d['helpers'] = project.helpers.all()
+			d['funders'] = project.funders.all()
+			if request.user.is_authenticated():
 				user = request.user
+				up = UserProfile.objects.get(user=user)
 				projectLiked = Like.objects.filter(project_id=project.id,user_id=user.id)
+				
 				if projectLiked:
 					d['liked'] = True
 				else:
 					d['liked'] = False
+					
+				if not d['is_company']:
+					d['helped'] = project.helpers.filter(id=up.id)
+					print d['helped']
 			return render(request,'yalladevelop/project.html', d)
 		else:
 			return render(request, 'yalladevelop/404.html')
@@ -149,6 +157,7 @@ def showProfile(request,profile_id=-1):
 			d['userProfile'] = userProfile
 			d['page_name'] = "%s's Profile" % userProfile.name
 			d['my_page'] = False
+			d['skills'] = skills
 			if request.user.id == userAccount.id:
 				d['my_profile'] = True
 			else:
@@ -320,17 +329,14 @@ def allcompanies(request):
 @login_required
 def track(request):
 	d = getVariables(request)
+	u = d['user']
+	up = UserProfile.objects.get(user_id=u.id)
 	if not d['is_company']:
-		#show my projects
-		pass
-		#show projects im helping
-	
-	#show projects i funded
-	funded = "0" 
+		d['my_projects'] = Project.objects.filter(user_id=u.id)
+		d['helping'] = Project.objects.filter(helpers=u.id)
+	d['funding'] = Project.objects.filter(funders=u.id)
 	
 	return render_to_response('yalladevelop/track.html',d)
-
-
 
 
 def explore(request):
@@ -411,28 +417,33 @@ def profileSettings(request):
 	return render(request, 'yalladevelop/profile_settings.html', d)
 
 
-# def profileSettings(request):
-# 	d = getVariables(request)
-# 	d['skills'] = Skill.objects.all()
-# 	d['user_skills'] = d['user_profile'].skill.all()
-# 	return render(request, 'yalladevelop/profile_settings.html', d)
-# 
-# 
-# @login_required
-# def save_settings(request):
-# 	if request.method == 'POST':
-# 		data = request.POST
-# 		print data
-# 		if request.user.check_password(request.POST['password1']):
-# 			name = data['firstname']
-# 			new_pass1 = data['password2']
-# 			new_pass2 = data['password3']
-# 			print 'x'+name+'x',new_pass1,new_pass2
-# 			# password correct, update settings
-# 		else:
-# 			return redirect('/profile_settings/')
-# 	else:
-# 		return redirect('/')
+def search_skills(request,skill_id=0):
+	d = getVariables(request)
+	if skill_id == 0:
+		d['skills'] = Skill.objects.all()
+		return render_to_response('yalladevelop/search_skills.html',d)
+	else:
+		skill = Skill.objects.filter(id=skill_id)
+		if skill:
+			skill = skill[0]
+			users = UserProfile.objects.filter(skill=skill)
+			paginator = Paginator(users,25) # showing 25 users
+			page = request.GET.get('page')
+			
+			try:
+				users = paginator.page(page)
+			except PageNotAnInteger:
+				users = paginator.page(1)
+			except EmptyPage:
+				users = paginator.page(paginator.num_pages)
+			
+			d['users'] = users
+			d['skill'] = skill
+			
+			return render_to_response('yalladevelop/search_skills.html',d)
+		else: #if skill is not found
+			return search_skills(request,skill_id=0)
+
 
 # -------------------- Functions -------------------------
 # def postComment(request,image_id=1):
@@ -462,3 +473,52 @@ def likeProject(request,project_id):
 			project.save()
 		url = '/project/%s' % str(project.id)
 		return HttpResponseRedirect(url) # return to project page
+
+@login_required
+def helpProject(request,project_id):
+	project = Project.objects.filter(id=project_id)
+	if project:
+		project = project[0]
+		user = request.user
+		up = UserProfile.objects.get(user=user)
+		
+		if up.skill.count() > 0:
+			helping = project.helpers.filter(id=up.id)
+			if not helping:
+				# add user to helpers
+				project.helpers.add(up)
+				url = '/project/%s' % str(project.id)
+				return HttpResponseRedirect(url)
+			else: # if helping
+				# remove user from helpers
+				project.helpers.remove(up)
+				url = '/project/%s' % str(project.id)
+				return HttpResponseRedirect(url)
+		else: # user doesn't have any skills
+			url = '/project/%s' % str(project.id)
+			return HttpResponseRedirect(url)
+
+def donate(request,project_id):
+	d = getVariables(request)
+	project = Project.objects.filter(id=project_id)
+	if project:
+		project = project[0]
+		d['project'] = project
+		
+		if request.user.is_authenticated():
+			user = request.user
+			up = UserProfile.objects.get(user=user)
+			
+		url = '/project/%s' % str(project.id)
+		return HttpResponseRedirect(url)
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

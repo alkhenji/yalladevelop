@@ -7,6 +7,8 @@
 <h3> Target Money: ${{ project.target_money }} <h3>
 <h3> Money Collected: ${{ project.money_collected }} <h3>
 <h3> Likes: {{ project.likes }} <h3>
+<h3> Developers: {{ project.helpers.count }} | {{ helpers }} <h3>
+<h3> Funders: ({{ project.funders.count }}) | {{ funders }}<h3>
 	
 
 <div>Progress: {{progress}}% Completed</div><br/>
@@ -22,7 +24,14 @@
 	<button class="btn btn-default">Already Liked</button>
 {% endif %}
 
-<button class="btn btn-info">I Can Help!</button>
+
+
+{% if logged_in and not helped %}
+	<a href="/project/{{project.id}}/helpProject">I Can Help!</a>
+{% else %}
+	<a href="/project/{{project.id}}/helpProject">I Don't Wanna Help!</a>
+	<button class="btn btn-default">Already Helping</button>
+{% endif %}
 
 <button class="btn btn-success">I Will Donate!</button>
 

@@ -1,0 +1,37 @@
+{% include "yalladevelop/header.html" %}
+
+<h3>Search by Skills: </h3>
+
+{% if skills %}
+	{% for skill in skills %}
+		<ul>
+			<li><a href="/search_skills/{{skill.id}}/">{{skill}}</a></li>
+		</ul>
+	{% endfor %}
+{% else %}
+
+	<h5>Users that can "{{skill}}":</h5>
+
+	{% for u in users %}
+    	<a href="/profile/{{u.user.id}}">{{ u.name }}</a><br />
+	{% endfor %}
+
+	<div class="pagination">
+	    <span class="step-links">
+	        {% if users.has_previous %}
+	            <a href="?page={{ users.previous_page_number }}">Previous</a> |
+	        {% endif %}
+
+	        <span class="current">
+	            Page {{ users.number }} of {{ users.paginator.num_pages }}
+	        </span>
+
+	        {% if users.has_next %}
+	            | <a href="?page={{ users.next_page_number }}">Next</a>
+	        {% endif %}
+	    </span>
+	</div>
+
+{% endif %}
+
+{% include "yalladevelop/footer.html" %}

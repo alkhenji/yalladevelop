@@ -16,11 +16,19 @@ urlpatterns = patterns('',
 	url(r'^addproject/$', views.addProject, name='addProject'),
 	url(r'^forgotpassword/$', views.forgotPassword, name='forgotPassword'),
 	url(r'^profile_settings/$', views.profileSettings, name='profileSettings'),
-	url(r'^project/(?P<project_id>\d+)/likeProject$', views.likeProject, name='likeProject'),
+	
 	url(r'^userorcompany/$', views.userorcompany, name="userorcompany"),
 	url(r'^user-signup/$', views.signup_user, name="signup_user"),
 	url(r'^track/$', views.track, name="track"),
 	url(r'^company-signup/$', views.signup_company, name="signup_company"),	
+	
+	url(r'^search_skills/$', views.search_skills, name="search_skills"),	
+	url(r'^search_skills/(?P<skill_id>\d+)/$', views.search_skills, name="search_skills"),	
+	
+	# Functions dispatcher
+	url(r'^project/(?P<project_id>\d+)/likeProject$', views.likeProject, name='likeProject'),
+	url(r'^project/(?P<project_id>\d+)/helpProject$', views.helpProject, name='helpProject'),
+	url(r'^project/(?P<project_id>\d+)/donate$', views.donate, name='donate'),
 	
 	# Static Pages Dispatcher
 	url(r'^about/$', views.about, name="about"),
