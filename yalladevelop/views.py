@@ -288,6 +288,51 @@ def allprojects(request):
 	d['projects'] = projects
 	return render_to_response('yalladevelop/allprojects.html',d)
 
+def allusers(request):
+	d = getVariables(request)
+	users = UserProfile.objects.filter(is_company=False)
+	paginator = Paginator(users, 2) # Show 25 projects per page
+	page = request.GET.get('page')
+	try:
+		users = paginator.page(page)
+	except PageNotAnInteger:
+		users = paginator.page(1)
+	except EmptyPage:
+		users = paginator.page(paginator.num_pages)
+	d['users'] = users
+	return render_to_response('yalladevelop/allusers.html',d)
+	
+def allcompanies(request):
+	d = getVariables(request)
+	users = UserProfile.objects.filter(is_company=True)
+	paginator = Paginator(users, 2) # Show 25 projects per page
+	page = request.GET.get('page')
+	try:
+		users = paginator.page(page)
+	except PageNotAnInteger:
+		users = paginator.page(1)
+	except EmptyPage:
+		users = paginator.page(paginator.num_pages)
+	d['users'] = users
+	return render_to_response('yalladevelop/allcompanies.html',d)
+
+
+@login_required
+def track(request):
+	d = getVariables(request)
+	if not d['is_company']:
+		#show my projects
+		pass
+		#show projects im helping
+	
+	#show projects i funded
+	funded = "0" 
+	
+	return render_to_response('yalladevelop/track.html',d)
+
+
+
+
 def explore(request):
 	d = getVariables(request)
 	projects = Project.objects.all()
@@ -337,18 +382,6 @@ def dhelp(request):
 def userorcompany(request):
 	d = getVariables(request)
 	return render(request, 'yalladevelop/userorcompany.html', {})
-
-
-@login_required
-def update_company(request):
-	d = getVariables(request)
-	u = request.user
-	up = d['user_profile']
-	
-	
-@login_required
-def update_user(request):
-	pass
 
 @login_required
 def profileSettings(request):

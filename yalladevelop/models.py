@@ -53,11 +53,13 @@ class UserProfile(models.Model):
 	user = models.ForeignKey(User, unique=True)
 	name = models.CharField(max_length=200)
 	points = models.IntegerField(default=0)
+	# funded = models.ManyToManyField(Project)
 	def __unicode__(self):
 		return self.name
 
+
 class Project(models.Model):
-	user_id = models.IntegerField() # can be used to change owner of project later
+	user_id = models.IntegerField(null=False) # can be used to change owner of project later
 	name = models.CharField(max_length=200)
 	date_published = models.DateField(auto_now_add=True)
 	date_completed = models.DateField(null=True)
@@ -67,5 +69,7 @@ class Project(models.Model):
 	description = models.CharField(max_length=200)
 	completed = models.BooleanField(default=False)
 	is_featured = models.BooleanField(default=False)
+	helpers = models.ManyToManyField(UserProfile,related_name="helper")
+	funders = models.ManyToManyField(UserProfile,related_name="funder")
 	def __unicode__(self):
 		return self.name

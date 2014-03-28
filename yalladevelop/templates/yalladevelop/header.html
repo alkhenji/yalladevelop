@@ -20,12 +20,15 @@
 	<ul>
 		<li><a href="/">Home</a></li>
 		<li><a href="/allprojects/">Browse Projects</a></li>
+		<li><a href="/allusers/">Browse Users</a></li>
+		<li><a href="/allcompanies/">Browse Companies</a></li>
 		<li><a href="/explore/">Explore</a></li>
 		<li><a href="/rankings/">Rankings</a></li>
 
 	
 		{% if logged_in %}
 			<li><a href="/profile/{{user.id}}">My Profile</a></li>
+			<li><a href="/track/">Track Projects</a></li>
 			{% if not is_company %}
 				<li><a href="/addproject/">Add Project</a></li>
 			{% endif %}
@@ -44,9 +47,3 @@
 			{% endif %}
 			</li>
 	</ul>
-		
-	<div class="btn-group">
-		<button type="button" class="btn btn-default">Left</button>
-		<button type="button" class="btn btn-default">Middle</button>
-		<button type="button" class="btn btn-default">Right</button>
-	</div>

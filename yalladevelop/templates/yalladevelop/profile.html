@@ -1,8 +1,14 @@
 {% include "yalladevelop/header.html" %}
 
 <h1>Profile: </h1>
-<a href="/profile_settings">[Edit Profile]</a>
-	
+<a href="/profile_settings">[Edit Profile]</a><br/>
+{% if not userProfile.is_company %}
+	<a href="/">[My Projects]</a><br/>
+	<a href="/">[Projects I Helped]</a><br/>
+{% else %}
+	<a href="/">[Projects We Funded]</a><br/>
+{% endif %}
+
 <h4>
 
 Name: {{ userProfile.name }} <br />
