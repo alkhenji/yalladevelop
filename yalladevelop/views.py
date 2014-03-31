@@ -74,13 +74,8 @@ def rankings(request):
 
 
 def index(request):
-	import random
-	d = getVariables(request,dictionary={'page_name': "Home"})
-	# f_projects = Project.objects.filter(is_featured=True)
-	# nF = []
-	# for i in range(3):
-	# 	nF.append(f_project[random.randint(0,len(f_projects))])
-	# d['featured_projects'] = nF
+	d = getVariables(request,dictionary={'page_name': "Home"})	
+	d['featured_projects'] = Project.objects.filter(is_featured=True).order_by('?')[:3]
 	d['hot_projects'] = Project.objects.all().order_by('-likes')[:10] # how many projects
 	return render(request, 'yalladevelop/index.html', d)
 
@@ -190,8 +185,7 @@ def signup_user(request):
 			new_user = form.save()
 			new_user = authenticate(username=request.POST['username'],password=request.POST['password1'])
 			login(request, new_user)
-			url = reverse('index')
-			return HttpResponseRedirect(url)
+			return HttpResponseRedirect(reverse('index'))
 	else:
 		form = UserCreateForm()
 	return render(request, "yalladevelop/signup.html", {'form': form,'usersignup':True})
@@ -204,8 +198,7 @@ def signup_company(request):
 			new_user = form.save()
 			new_user = authenticate(username=request.POST['username'],password=request.POST['password1'])
 			login(request, new_user)
-			url = reverse('index')
-			return HttpResponseRedirect(url)
+			return HttpResponseRedirect(reverse('index'))
 	else:
 		form = CompanyCreateForm()
 	return render(request, "yalladevelop/signup.html", {'form': form,'usersignup':False})
