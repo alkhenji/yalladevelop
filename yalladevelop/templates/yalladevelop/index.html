@@ -1,5 +1,16 @@
 {% include "yalladevelop/header.html" %}
 
 <h1>Website Under Construction.</h1>
+
+<h5>Featured Projects:</h5>
+	{% for project in featured_projects %}
+		<h6>Project Name: {{project.name}} </h6>
+	{% endfor %}
+	
+<h5>Hot Projects:</h5>
+	
+	{% for project in hot_projects %}
+		<h6>Project Name: {{project.name}}, Likes: {{project.likes}}</h6>
+	{% endfor %}
 	
 {% include "yalladevelop/footer.html" %}

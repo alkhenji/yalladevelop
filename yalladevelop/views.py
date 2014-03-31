@@ -74,7 +74,14 @@ def rankings(request):
 
 
 def index(request):
+	import random
 	d = getVariables(request,dictionary={'page_name': "Home"})
+	# f_projects = Project.objects.filter(is_featured=True)
+	# nF = []
+	# for i in range(3):
+	# 	nF.append(f_project[random.randint(0,len(f_projects))])
+	# d['featured_projects'] = nF
+	d['hot_projects'] = Project.objects.all().order_by('-likes')[:10] # how many projects
 	return render(request, 'yalladevelop/index.html', d)
 
 @csrf_exempt #login required
@@ -114,7 +121,7 @@ def showProject(request,project_id=-1):
 			d['page_name'] = "Project: %s" % project.name
 			d['project'] = project
 			d['owner'] = User.objects.get(id=project.user_id).username
-			d['progress'] = int(project.money_collected/project.target_money)
+			d['progress'] = int((float(project.money_collected) / float(project.target_money)) * 100)
 			d['helpers'] = project.helpers.all()
 			d['funders'] = project.funders.all()
 			if request.user.is_authenticated():
