@@ -28,7 +28,9 @@ urlpatterns = patterns('',
 	# Functions dispatcher
 	url(r'^project/(?P<project_id>\d+)/likeProject$', views.likeProject, name='likeProject'),
 	url(r'^project/(?P<project_id>\d+)/helpProject$', views.helpProject, name='helpProject'),
-	url(r'^project/(?P<project_id>\d+)/donate$', views.donate, name='donate'),
+	url(r'^project/(?P<project_id>\d+)/donate/$', views.donate, name='donate'),
+	
+	url(r'^project/(?P<project_id>\d+)/edit$', views.editProject, name='editProject'),
 	
 	# Static Pages Dispatcher
 	url(r'^about/$', views.about, name="about"),

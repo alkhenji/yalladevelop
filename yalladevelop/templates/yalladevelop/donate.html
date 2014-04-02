@@ -2,4 +2,18 @@
 
 <h1>Donate: </h1>
 
+<form action="/project/{{project.id}}/donate/" method="post">
+	{% csrf_token %}
+	{% if user %}
+		<h6>Logged in as: <strong>{{user}}</strong></h6>
+	{% endif %}
+	
+	<h6>Project Name: {{ project.name }}</h6>
+	<h6>Project Owned By: {{ owner }}</h6>
+	{{form.as_p}}
+	
+	<input type="submit" value="Submit" />
+</form>
+<br/>
+
 {% include "yalladevelop/footer.html" %}

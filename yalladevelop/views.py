@@ -76,10 +76,12 @@ def rankings(request):
 def index(request):
 	d = getVariables(request,dictionary={'page_name': "Home"})	
 	d['featured_projects'] = Project.objects.filter(is_featured=True).order_by('?')[:3]
-	d['hot_projects'] = Project.objects.all().order_by('-likes')[:10] # how many projects
+	d['hot_projects'] = Project.objects.all().order_by('-likes')[:3] # how many projects
+	d['random_member'] = UserProfile.objects.filter(is_company=False).order_by('?')[:1][0]
 	return render(request, 'yalladevelop/index.html', d)
 
-@csrf_exempt #login required
+@login_required
+@csrf_exempt
 def addProject(request):
 	d = getVariables(request)
 	if d['is_company']:
@@ -106,6 +108,61 @@ def addProject(request):
 		d['form'] = form
 	return render(request, "yalladevelop/addproject.html", d)
 
+@login_required
+def editProject(request,project_id):
+	try:
+		project = Project.objects.get(id=project_id)
+	except Exception:
+		return HttpResponseRedirect('/')
+		
+	print project.completed
+	
+	if project.completed:
+		print "2342342423"
+		return HttpResponseRedirect('/')
+	
+	d = getVariables(request)
+	d['project'] = project
+	if request.method == "POST":
+		form = EditForm(request.POST)
+		if form.is_valid():
+			form.update(d)
+			return HttpResponseRedirect("/project/" + str(project.id))
+	else:
+		u = request.user
+		up = d['user_profile']
+		initial = {'project_name':project.name,'description':project.description}
+		d['form'] = EditForm(initial=initial)
+	return render(request, 'yalladevelop/project_settings.html', d)
+
+# @login_required
+# def editProject(request,project_id):
+# 	try:
+# 		project = Project.objects.get(id=project_id)
+# 	except Exception:
+# 		return HttpResponseRedirect('/')
+# 	
+# 	if request.user.id == project.user_id:
+# 		
+# 		if request.method == "POST":
+# 			form = Editorm(request.POST)
+# 			if form.is_valid():
+# 				name = form.cleaned_data['project_name']
+# 				description = form.cleaned_data['description']
+# 				url = '/project/%s' % str(p.id)
+# 				return HttpResponseRedirect(url) # return to edited project page
+# 			else:
+# 				form = EditForm()
+# 				d['form'] = form
+# 				return render(request, 'yalladevelop/editproject.html', d)
+# 			form = EditForm()
+# 			d['form'] = form
+# 		return render(request, 'yalladevelop/editproject.html', d)
+# 
+# 
+# 			return HttpResponseRedirect('')
+# 	else:
+# 		return HttpResponseRedirect('/')
 	
 def showProject(request,project_id=-1):
 	d = getVariables(request,dictionary={'page_name': "Browse Projects"})
@@ -116,13 +173,21 @@ def showProject(request,project_id=-1):
 			d['page_name'] = "Project: %s" % project.name
 			d['project'] = project
 			d['owner'] = User.objects.get(id=project.user_id).username
-			d['progress'] = int((float(project.money_collected) / float(project.target_money)) * 100)
+			d['progress'] = min(int((float(project.money_collected) / float(project.target_money)) * 100),100)
 			d['helpers'] = project.helpers.all()
 			d['funders'] = project.funders.all()
+			d['complete'] = project.money_collected >= project.target_money
+			
+			if (d['complete']) and (not project.completed): #fixes any un-noticed payments
+				project.completed = True
+				project.save()
+			
 			if request.user.is_authenticated():
 				user = request.user
 				up = UserProfile.objects.get(user=user)
 				projectLiked = Like.objects.filter(project_id=project.id,user_id=user.id)
+				
+				d['my_project'] = project.user_id == request.user.id
 				
 				if projectLiked:
 					d['liked'] = True
@@ -130,7 +195,7 @@ def showProject(request,project_id=-1):
 					d['liked'] = False
 					
 				if not d['is_company']:
-					d['helped'] = project.helpers.filter(id=up.id)
+					d['helped'] = project.helpers.filter(id=user.id)
 					print d['helped']
 			return render(request,'yalladevelop/project.html', d)
 		else:
@@ -283,10 +348,11 @@ def contact(request):
 		d['form'] = form
 	return render(request, "yalladevelop/contact.html", d)
 
+
 def allprojects(request):
 	d = getVariables(request)
 	projects = Project.objects.all()
-	paginator = Paginator(projects, 2) # Show 25 projects per page
+	paginator = Paginator(projects, 25) # Show 25 projects per page
 	page = request.GET.get('page')
 	try:
 		projects = paginator.page(page)
@@ -333,8 +399,8 @@ def track(request):
 	up = UserProfile.objects.get(user_id=u.id)
 	if not d['is_company']:
 		d['my_projects'] = Project.objects.filter(user_id=u.id)
-		d['helping'] = Project.objects.filter(helpers=u.id)
-	d['funding'] = Project.objects.filter(funders=u.id)
+		d['helping'] = Project.objects.filter(helpers=up.id)
+	d['funding'] = Project.objects.filter(funders=up.id)
 	
 	return render_to_response('yalladevelop/track.html',d)
 
@@ -483,7 +549,7 @@ def helpProject(request,project_id):
 		up = UserProfile.objects.get(user=user)
 		
 		if up.skill.count() > 0:
-			helping = project.helpers.filter(id=up.id)
+			helping = project.helpers.filter(id=user.id)
 			if not helping:
 				# add user to helpers
 				project.helpers.add(up)
@@ -494,31 +560,53 @@ def helpProject(request,project_id):
 				project.helpers.remove(up)
 				url = '/project/%s' % str(project.id)
 				return HttpResponseRedirect(url)
-		else: # user doesn't have any skills
+		else: # user doesn't have any skills!!! --------------------------- should redirect to profile page to add skills
 			url = '/project/%s' % str(project.id)
 			return HttpResponseRedirect(url)
-
-def donate(request,project_id):
+		
+def donate(request,project_id=False):
+	if project_id == False:
+		return HttpResponseRedirect('/')
+	try:
+		project = Project.objects.get(id=project_id)
+	except Exception:
+		return HttpResponseRedirect('/')
+	
 	d = getVariables(request)
-	project = Project.objects.filter(id=project_id)
-	if project:
-		project = project[0]
-		d['project'] = project
+	d['project'] = project
+	
+	try: # don't accept payments for projects that do not have an owner
+		d['owner'] = User.objects.get(id=project.user_id)
+	except Exception:
+		return HttpResponseRedirect('/')
 		
-		if request.user.is_authenticated():
-			user = request.user
-			up = UserProfile.objects.get(user=user)
+	if project.completed: #don't accept payments for completed projects
+		return HttpResponseRedirect('/')
+	
+	if request.method == "POST":
+		form = DonateForm(request.POST)
+		if form.is_valid():
+			if project.money_collected < project.target_money:
+				project.money_collected += form.cleaned_data['amount']
+				
+				if (request.user.is_authenticated()) and (not request.user.is_staff):
+					user = request.user
+					up = UserProfile.objects.get(user=user)
+					project.funders.add(u)
+					up.points += form.cleaned_data['amount']
+					up.save()
+				
+			if project.money_collected >= project.target_money:
+				project.completed = True
 			
-		url = '/project/%s' % str(project.id)
-		return HttpResponseRedirect(url)
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+			project.save()
+			return HttpResponseRedirect('/project/'+str(project.id)+'/')
+		else:
+			form = DonateForm()
+			d['form'] = form
+		return render(request, 'yalladevelop/donate.html', d)
+	else:
+		form = DonateForm()
+		d['form'] = form
+	return render(request, "yalladevelop/donate.html", d)
+	

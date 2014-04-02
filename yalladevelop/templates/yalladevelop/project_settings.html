@@ -1,0 +1,12 @@
+{% include "yalladevelop/header.html" %}
+
+<h1>Project Settings: </h1>
+	<form action="/project/{{project.id}}/edit" method="POST">
+		<h6>Username: <strong>{{user.username}}</strong></h6>
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="Submit" />
+	</form>
+<br/>
+
+{% include "yalladevelop/footer.html" %}

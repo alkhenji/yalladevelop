@@ -3,6 +3,9 @@
 {% include "yalladevelop/header.html" %}
 
 <h2> Project Name: {{ project }} </h2>
+{% if my_project %}
+	<h4><a href="edit">[ Edit Project ]</a></h4>
+{% endif %}
 <h3> Owned By: {{ owner }} <h3>
 <h3> Target Money: ${{ project.target_money }} <h3>
 <h3> Money Collected: ${{ project.money_collected }} <h3>
@@ -27,16 +30,23 @@
 
 
 
-{% if logged_in and not helped %}
+{% if logged_in and not helped and not is_company %}
 	<a href="/project/{{project.id}}/helpProject">I Can Help!</a>
-{% else %}
+{% elif not is_company %}
 	<a href="/project/{{project.id}}/helpProject">I Don't Wanna Help!</a>
 	<button class="btn btn-default">Already Helping</button>
 {% endif %}
 
-<button class="btn btn-success">I Will Donate!</button>
+{% if complete %}
+	<input type="button" class="btn btn-default" value="Project is Complete (Can't Donate)">
+{% else %}
+	<form>
+	<input type="button" onClick="parent.location='donate/'" class="btn btn-success" value="I Will Donate!">
+	</form>
+{% endif %}
 
-<br/><br/>
+<br/>
+<br/>
 
 
 {% include "yalladevelop/footer.html" %}

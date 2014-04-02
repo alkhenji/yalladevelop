@@ -73,3 +73,13 @@ class Project(models.Model):
 	funders = models.ManyToManyField(UserProfile,related_name="funder")
 	def __unicode__(self):
 		return self.name
+
+class Payment(models.Model):
+	user = models.ForeignKey(User, unique=False,null=True)
+	project = models.ForeignKey(Project, unique=False,null=False)
+	amount = models.IntegerField()
+	def __unicode__(self):
+		if user:
+			return "User %s paid %s to project %s" % (str(user.id), str(amount), str(project.id))
+		else:
+			return "Payment of %s to project %s" % (str(amount), str(project.id))

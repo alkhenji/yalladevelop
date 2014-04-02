@@ -1,16 +1,14 @@
 {% include "yalladevelop/header.html" %}
 
 <h1>Profile: </h1>
-<a href="/profile_settings">[Edit Profile]</a><br/>
-{% if not userProfile.is_company %}
-	<a href="/">[My Projects]</a><br/>
-	<a href="/">[Projects I Helped]</a><br/>
-{% else %}
-	<a href="/">[Projects We Funded]</a><br/>
+{% if my_profile %}
+<h4><a href="/profile_settings">[Edit Profile]</a><br/></h4>
 {% endif %}
 
-<h4>
+<h4><a href="/track/">[Track Projects]</a></h4>
 
+
+<h4>
 Name: {{ userProfile.name }} <br />
 User: {{ userProfile.user }} <br />
 Email: {{ userAccount.email }} <br />
@@ -18,8 +16,7 @@ Is Staff?: {{ userAccount.is_staff }} <br />
 Is Premium?: {{ userProfile.is_premium }} <br />
 Is Company?: {{ userProfile.is_company }} <br />
 Skills: {{ skills }} <br />
-
-
+Points: {{ userProfile.points }}</br>
 
 </h4>
 

@@ -12,10 +12,36 @@ class ContactForm(forms.Form):
 	sender = forms.EmailField()
 	cc_myself = forms.BooleanField(label="CC Myself?",required=False)
 
+
+class DonateForm(forms.Form):
+	amount = forms.IntegerField(required=True)
+	
+	def make_payment(request):
+		print request
+		# try:
+		# 	project = Project.objects.get(id=project_id)
+		# except Project.DoesNotExist:
+		# 	return False
+		print project
+
+
 class AddForm(forms.Form):
 	project_name = forms.CharField(max_length=100, required=True)
 	description = forms.CharField(required=True)
 	target_money = forms.IntegerField(required=True)
+	
+class EditForm(forms.Form):
+	project_name = forms.CharField(max_length=100, required=True)
+	description = forms.CharField(required=True)
+	
+	def update(self,d):
+		project = d['project']
+		project.name = self.cleaned_data['project_name']
+		project.description = self.cleaned_data['description']
+		project.save()
+		
+
+		
 
 
 class UserCreateForm(UserCreationForm):
