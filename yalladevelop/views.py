@@ -407,15 +407,16 @@ def track(request):
 
 def explore(request):
 	d = getVariables(request)
-	projects = Project.objects.all()
-	paginator = Paginator(projects, 2) # Show 25 projects per page
-	page = request.GET.get('page')
-	try:
-		projects = paginator.page(page)
-	except PageNotAnInteger:
-		projects = paginator.page(1)
-	except EmptyPage:
-		projects = paginator.page(paginator.num_pages)
+	projects = Project.objects.all().order_by('?')[:10]
+	# projects = Project.objects.all()
+	# paginator = Paginator(projects, 2) # Show 25 projects per page
+	# page = request.GET.get('page')
+	# try:
+	# 	projects = paginator.page(page)
+	# except PageNotAnInteger:
+	# 	projects = paginator.page(1)
+	# except EmptyPage:
+	# 	projects = paginator.page(paginator.num_pages)
 	d['projects'] = projects
 	return render_to_response('yalladevelop/explore.html',d)
 
