@@ -13,6 +13,10 @@ class ContactForm(forms.Form):
 	cc_myself = forms.BooleanField(label="CC Myself?",required=False)
 
 
+class ForgotForm(forms.Form):
+	email = forms.EmailField(required=False)
+				
+
 class DonateForm(forms.Form):
 	amount = forms.IntegerField(required=True)
 	

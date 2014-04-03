@@ -312,6 +312,7 @@ def forgotPassword(request):
 				sender = "noreply@yalladevelop.com"
 				recipients = ['al.khenji@gmail.com']
 				send_mail(subject,message,sender,recipients)
+				user.save()
 				return HttpResponseRedirect('/')
 		form = ForgotForm()
 		d['form'] = form
