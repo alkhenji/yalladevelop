@@ -6,20 +6,26 @@
     <a href="/profile/{{p.user.id}}">{{ p.name }}</a><br />
 {% endfor %}
 
-<div class="pagination">
-    <span class="step-links">
-        {% if users.has_previous %}
-            <a href="?page={{ users.previous_page_number }}">Previous</a> |
-        {% endif %}
+<ul class="pagination">
+	{% if users.has_previous %}
+		<li><a href="?page={{ users.previous_page_number }}">«</a></li>
+	{% else %}
+		<li class="disabled"><a href="#">«</a></li>
+	{% endif %}
+	{% for i in paginator.page_range %}
+		{% if forloop.counter == users.number %}
+			<li class="active"><a href="/allusers/?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+		{% else %}
+			<li><a href="/allusers/?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+		{% endif %}
+	{% endfor %}
+	{% if users.has_next %}
+		<li><a href="?page={{ users.next_page_number }}">»</a></li>
+	{% else %}
+		<li class="disabled"><a href="#">»</a></li>
+	{% endif %}	
+</ul>
 
-        <span class="current">
-            Page {{ users.number }} of {{ users.paginator.num_pages }}
-        </span>
 
-        {% if users.has_next %}
-            | <a href="?page={{ users.next_page_number }}">Next</a>
-        {% endif %}
-    </span>
-</div>
 
 {% include "yalladevelop/footer.html" %}

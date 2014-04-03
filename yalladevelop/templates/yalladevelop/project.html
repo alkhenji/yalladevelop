@@ -12,37 +12,31 @@
 <h3> Likes: {{ project.likes }} <h3>
 <h3> Developers: {{ project.helpers.count }} | {{ helpers }} <h3>
 <h3> Funders: ({{ project.funders.count }}) | {{ funders }}<h3>
-	
-
 <div>Progress: {{progress}}% Completed</div><br/>
-	{{progress}}
-<div class="progress">
 
+<div class="progress progress-striped active">
 	<div class="progress-bar" style="width: {{progress}}%;"></div>
 </div>
 
 {% if logged_in and not liked %}
-	<a href="/project/{{project.id}}/likeProject">I like This</a>
-	<button class="btn btn-danger">I Like This!</button>
+	<a class="btn btn-danger" href="/project/{{project.id}}/likeProject">I like This!</a>
 {% else %}
-	<button class="btn btn-default">Already Liked</button>
+	<button disabled class="btn btn-danger">Already Liked</button>
 {% endif %}
 
-
-
-{% if logged_in and not helped and not is_company %}
-	<a href="/project/{{project.id}}/helpProject">I Can Help!</a>
-{% elif not is_company %}
-	<a href="/project/{{project.id}}/helpProject">I Don't Wanna Help!</a>
-	<button class="btn btn-default">Already Helping</button>
-{% endif %}
 
 {% if complete %}
-	<input type="button" class="btn btn-default" value="Project is Complete (Can't Donate)">
+	<input type="button" disabled class="btn btn-info" value="Can't help (Project is Complete)">
+	<input type="button" disabled class="btn btn-success" value="Can't Donate (Project is Complete)">
 {% else %}
-	<form>
-	<input type="button" onClick="parent.location='donate/'" class="btn btn-success" value="I Will Donate!">
-	</form>
+	{% if not is_company %}
+		{% if logged_in and not helped %}
+			<a class="btn btn-info" href="/project/{{project.id}}/helpProject">I Can Help!</a>
+		{% else %}
+			<a class="btn btn-warning" onClick="confirm('Are you sure you want to be removed from the developers list?')" href="/project/{{project.id}}/helpProject">I Don't Wanna Help!</a>
+		{% endif %}
+	{% endif %}
+	<a class="btn btn-success" href="/project/{{project.id}}/donate">I Will Donate!</a>
 {% endif %}
 
 <br/>

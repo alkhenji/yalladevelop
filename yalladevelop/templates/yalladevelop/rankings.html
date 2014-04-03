@@ -1,8 +1,8 @@
 {% include "yalladevelop/header.html" %}
 
-<h2> Ranking Page: </h2>
+<h2><i class="fa fa-trophy"></i> Ranking Page: </h2>
 
-<h4> Top 10 Companies </h4>
+<h4><i class="fa fa-suitcase"></i> Top 10 Companies </h4>
 	{% if top_companies %}
 		<ul>
 		{% for c in top_companies %}
@@ -13,7 +13,7 @@
 		<h6> No companies made it to the high scores yet. </h6>
 	{% endif %}
 
-<h4> Top 10 Users </h4>
+<h4><i class="fa fa-group"></i> Top 10 Users </h4>
 	{% if top_users %}
 		<ul>
 		{% for u in top_users %}
@@ -24,7 +24,7 @@
 		<h6> No users made it to the high scores yet. </h6>
 	{% endif %}
 
-<h4> Top 10 Projects </h4>
+<h4><i class="fa fa-cogs"></i> Top 10 Projects </h4>
 	{% if top_projects %}
 		<ul>
 		{% for p in top_projects %}

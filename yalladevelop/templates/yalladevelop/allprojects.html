@@ -6,20 +6,24 @@
     <a href="/project/{{project.id}}">{{ project.name }}</a><br />
 {% endfor %}
 
-<div class="pagination">
-    <span class="step-links">
-        {% if projects.has_previous %}
-            <a href="?page={{ projects.previous_page_number }}">Previous</a> |
-        {% endif %}
-
-        <span class="current">
-            Page {{ projects.number }} of {{ projects.paginator.num_pages }}
-        </span>
-
-        {% if projects.has_next %}
-            | <a href="?page={{ projects.next_page_number }}">Next</a>
-        {% endif %}
-    </span>
-</div>
+<ul class="pagination">
+	{% if projects.has_previous %}
+		<li><a href="?page={{ projects.previous_page_number }}">«</a></li>
+	{% else %}
+		<li class="disabled"><a href="#">«</a></li>
+	{% endif %}
+	{% for i in paginator.page_range %}
+		{% if forloop.counter == projects.number %}
+			<li class="active"><a href="/allprojects/?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+		{% else %}
+			<li><a href="/allprojects/?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+		{% endif %}
+	{% endfor %}
+	{% if projects.has_next %}
+		<li><a href="?page={{ projects.next_page_number }}">»</a></li>
+	{% else %}
+		<li class="disabled"><a href="#">»</a></li>
+	{% endif %}	
+</ul>
 
 {% include "yalladevelop/footer.html" %}

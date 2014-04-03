@@ -114,11 +114,8 @@ def editProject(request,project_id):
 		project = Project.objects.get(id=project_id)
 	except Exception:
 		return HttpResponseRedirect('/')
-		
-	print project.completed
 	
 	if project.completed:
-		print "2342342423"
 		return HttpResponseRedirect('/')
 	
 	d = getVariables(request)
@@ -195,8 +192,7 @@ def showProject(request,project_id=-1):
 					d['liked'] = False
 					
 				if not d['is_company']:
-					d['helped'] = project.helpers.filter(id=user.id)
-					print d['helped']
+					d['helped'] = up in project.helpers.filter(id=up.id)
 			return render(request,'yalladevelop/project.html', d)
 		else:
 			return render(request, 'yalladevelop/404.html')
@@ -361,12 +357,13 @@ def allprojects(request):
 	except EmptyPage:
 		projects = paginator.page(paginator.num_pages)
 	d['projects'] = projects
+	d['paginator'] = paginator
 	return render_to_response('yalladevelop/allprojects.html',d)
 
 def allusers(request):
 	d = getVariables(request)
 	users = UserProfile.objects.filter(is_company=False)
-	paginator = Paginator(users, 2) # Show 25 projects per page
+	paginator = Paginator(users, 25) # Show 25 projects per page
 	page = request.GET.get('page')
 	try:
 		users = paginator.page(page)
@@ -375,12 +372,13 @@ def allusers(request):
 	except EmptyPage:
 		users = paginator.page(paginator.num_pages)
 	d['users'] = users
+	d['paginator'] = paginator
 	return render_to_response('yalladevelop/allusers.html',d)
 	
 def allcompanies(request):
 	d = getVariables(request)
 	users = UserProfile.objects.filter(is_company=True)
-	paginator = Paginator(users, 2) # Show 25 projects per page
+	paginator = Paginator(users, 25) # Show 25 projects per page
 	page = request.GET.get('page')
 	try:
 		users = paginator.page(page)
@@ -389,11 +387,14 @@ def allcompanies(request):
 	except EmptyPage:
 		users = paginator.page(paginator.num_pages)
 	d['users'] = users
+	d['paginator'] = paginator
 	return render_to_response('yalladevelop/allcompanies.html',d)
 
 
 @login_required
 def track(request):
+	if request.user.is_staff:
+		return HttpResponseRedirect('/')
 	d = getVariables(request)
 	u = d['user']
 	up = UserProfile.objects.get(user_id=u.id)
@@ -550,7 +551,7 @@ def helpProject(request,project_id):
 		up = UserProfile.objects.get(user=user)
 		
 		if up.skill.count() > 0:
-			helping = project.helpers.filter(id=user.id)
+			helping = up in project.helpers.filter(id=up.id)
 			if not helping:
 				# add user to helpers
 				project.helpers.add(up)
@@ -593,7 +594,7 @@ def donate(request,project_id=False):
 				if (request.user.is_authenticated()) and (not request.user.is_staff):
 					user = request.user
 					up = UserProfile.objects.get(user=user)
-					project.funders.add(u)
+					project.funders.add(up)
 					up.points += form.cleaned_data['amount']
 					up.save()
 				

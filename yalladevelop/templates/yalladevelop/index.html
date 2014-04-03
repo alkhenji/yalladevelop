@@ -1,6 +1,15 @@
 {% include "yalladevelop/header.html" %}
 
+<div class="jumbotron">
+  <h1> <i class="fa fa-wrench fa-lg"></i> Yalla Develop</h1>
+  <p>We are currently still constructing the website. Did you know: YallaDevelop was established in 2014?</p>
+  <p><a class="btn btn-primary btn-lg">Learn more</a></p>
+</div>
+
 <h1>Website Under Construction.</h1>
+
+
+
 
 <h5>Featured Projects:</h5>
 	{% for project in featured_projects %}
@@ -13,6 +22,6 @@
 		<h6>Project Name: {{project.name}}, Likes: {{project.likes}}</h6>
 	{% endfor %}
 	
-<h5>Meet a Member: <a href="/profile/{{random_member.id}}">{{random_member}}</h5>
+<h5>Meet a Member: <a href="/profile/{{random_member.id}}">{{random_member}}</a></h5>
 	
 {% include "yalladevelop/footer.html" %}
