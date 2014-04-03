@@ -4,15 +4,20 @@
 
 <form action="/project/{{project.id}}/donate/" method="post">
 	{% csrf_token %}
-	{% if user %}
+	{% if logged_in %}
 		<h6>Logged in as: <strong>{{user}}</strong></h6>
+	{% else %}
+		<div class="alert alert-dismissable alert-warning">
+		  <button type="button" class="close" data-dismiss="alert">x</button>
+		  <h4>Hello Guest!</h4>
+		  <p>Why not make an account to get points?</p>
+		</div>
 	{% endif %}
 	
 	<h6>Project Name: {{ project.name }}</h6>
 	<h6>Project Owned By: {{ owner }}</h6>
 	{{form.as_p}}
-	
-	<input type="submit" value="Submit" />
+	<button onClick="confirm('Are you sure this is the correct amount?')"class="btn btn-success" type="submit">Donate</button>
 </form>
 <br/>
 
