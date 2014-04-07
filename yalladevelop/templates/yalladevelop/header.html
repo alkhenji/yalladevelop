@@ -56,8 +56,8 @@
     <ul class="nav navbar-nav navbar-right">
 	
 	{% if logged_in %}
-		<li><a href="/profile/{{user.id}}">My Profile</a></li>
-		<li><a href="/track">Track Projects</a></li>
+		<li><a href="/profile/{{user.id}}"><i class="fa fa-user"></i> My Profile</a></li>
+		<li><a href="/track"><i class="fa fa-tachometer"></i> Track Projects</a></li>
     {% endif %}
 
 	<li class="dropdown">

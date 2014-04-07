@@ -41,6 +41,7 @@ def getVariables(request,dictionary={}):
 	if logged_in and not admin:
 		user_is_company = UserProfile.objects.get(user=user).is_company
 		user_profile = UserProfile.objects.get(user=user)
+		is_premium = UserProfile.objects.get(user=user).is_premium
 	elif admin:
 		user_is_company = False
 		user_profile = False
@@ -52,8 +53,8 @@ def getVariables(request,dictionary={}):
 		dictionary['logged_in'] = logged_in
 		dictionary['not_logged_in'] = not logged_in
 		if logged_in and not admin:
-			user_is_company = UserProfile.objects.get(user=user).is_company
-			dictionary['is_company'] = user_is_company
+			dictionary['is_company'] = UserProfile.objects.get(user=user).is_company
+			dictionary['is_premium'] = UserProfile.objects.get(user=user).is_premium
 		return dictionary
 	else:
 		return {'user':user,'logged_in':logged_in,'not_logged_in':not_logged_in,'is_company':user_is_company, 'user_profile': user_profile}

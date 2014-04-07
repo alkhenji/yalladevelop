@@ -1,9 +1,9 @@
 {% include "yalladevelop/header.html" %}
 
-<h1>All Companies Page</h1>
+<h1>Browse Companies: </h1>
 
 {% for c in users %}
-    <a href="/profile/{{c.user.id}}">{{ c.name }}</a><br />
+    <a href="/profile/{{c.user.id}}"><i class="fa fa-suitcase"></i> {{ c.name }}</a><br />
 {% endfor %}
 
 <ul class="pagination">

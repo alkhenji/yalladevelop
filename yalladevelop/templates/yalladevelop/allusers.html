@@ -1,9 +1,9 @@
 {% include "yalladevelop/header.html" %}
 
-<h1>All Users/Profiles Page</h1>
+<h1>Browse all the users: </h1>
 
 {% for p in users %}
-    <a href="/profile/{{p.user.id}}">{{ p.name }}</a><br />
+    <a href="/profile/{{p.user.id}}"><i class="fa fa-user"></i> {{ p.name }}</a><br />
 {% endfor %}
 
 <ul class="pagination">

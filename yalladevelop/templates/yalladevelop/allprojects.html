@@ -1,9 +1,9 @@
 {% include "yalladevelop/header.html" %}
 
-<h1>All Projects Page</h1>
+<h1>Browse Projects: </h1>
 
 {% for project in projects %}
-    <a href="/project/{{project.id}}">{{ project.name }}</a><br />
+    <a href="/project/{{project.id}}"><i class="fa fa-cog"></i> {{ project.name }}</a><br />
 {% endfor %}
 
 <ul class="pagination">
