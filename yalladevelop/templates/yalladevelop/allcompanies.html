@@ -2,9 +2,14 @@
 
 <h1>Browse Companies: </h1>
 
+<p> YallaDevelop is all about building a creaive and connected technological community. We bridge project owners and funers in one place. <br/>
+Our partners companies plays a major role in sustaining the community and funding the project hosted on YallaDevelop. Here is a list of our valuable partners </p>
+
+<ul>
 {% for c in users %}
     <a href="/profile/{{c.user.id}}"><i class="fa fa-suitcase"></i> {{ c.name }}</a><br />
 {% endfor %}
+</ul>
 
 <ul class="pagination">
 	{% if users.has_previous %}

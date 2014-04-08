@@ -7,9 +7,9 @@ from django.core.mail import send_mail
 
 class ContactForm(forms.Form):
 	name = forms.CharField(max_length=100)
+	email = forms.EmailField()
 	subject = forms.CharField(max_length=100)
 	message = forms.CharField()
-	sender = forms.EmailField()
 	cc_myself = forms.BooleanField(label="CC Myself?",required=False)
 
 

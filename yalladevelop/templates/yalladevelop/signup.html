@@ -2,14 +2,19 @@
 
 {% if usersignup %}
 	<h2> Signup as an Individual: </h2>
+	<p>Signing up with YallaDevelop will allow you to post prjects and get it funded. Also, you will be able to be part of projects and teams by donating skills to other projects, the more contribution you make the higher your ranking score will be. </p>
 {% else %}
 	<h2> Signup as an Company: </h2>
+	<p> We help you contribute to the community, as a company your role in developing community where you exist is cruical. With your knowledge and experince you can spot the ambitious and creative project owners, track their projects and fund it! <br/><br/>
+		YallaDevelop could really help improve your community reputation and help you to raise to the top ranking of contributing companies. Join YallaDevelop and fund the projects that are innovative and beneficial to you and the community. <br/><br/>
+		Unfortunately, companies can't post projects for funding, we are looking forward to improve the chances of those in need rather than help companies. </p><br/>
 {% endif %}
-	
+	<ul>
 		<form action="" method="post">
 			{{ form.as_p }}
 			<input type="submit" value="Create Account">
 		</form>
+	</ul>
 		<br/>
 
 {% include "yalladevelop/footer.html" %}

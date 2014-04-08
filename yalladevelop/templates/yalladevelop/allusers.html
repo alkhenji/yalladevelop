@@ -1,10 +1,16 @@
 {% include "yalladevelop/header.html" %}
 
-<h1>Browse all the users: </h1>
+<h1>User Directory: </h1>
 
+<p> Join our community, start your project on YallaDevelop and see your idea come into live soon after raising funding. It is our creative and innovative users who make us alive and sustainable. Join YallaDevelop users and stay connected. Here is your fellow YallaDevelop users: </p>
+
+<h3>Looking for people with specific skills? <a href="/search_skills"><i class="fa fa-globe"></i> Search Users by Skills </a></h3>
+
+<ul>
 {% for p in users %}
     <a href="/profile/{{p.user.id}}"><i class="fa fa-user"></i> {{ p.name }}</a><br />
 {% endfor %}
+</ul>
 
 <ul class="pagination">
 	{% if users.has_previous %}

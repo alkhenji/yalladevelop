@@ -2,9 +2,13 @@
 
 <h1>Browse Projects: </h1>
 
+<p> Projects are the core of YallaDevelop. The more we host, the more fund we raise the more the product owners and dreams are deployed. <br/>We aim to be the Middle East's number 1 technology project host and community. We grow bigger with every dream. Here is our hosted projects: </p>
+
+<ul>
 {% for project in projects %}
     <a href="/project/{{project.id}}"><i class="fa fa-cog"></i> {{ project.name }}</a><br />
 {% endfor %}
+</ul>
 
 <ul class="pagination">
 	{% if projects.has_previous %}

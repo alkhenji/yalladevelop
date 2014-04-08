@@ -613,4 +613,5 @@ def donate(request,project_id=False):
 		form = DonateForm()
 		d['form'] = form
 	return render(request, "yalladevelop/donate.html", d)
-	
+
+

@@ -2,10 +2,14 @@
 
 <h1>Explore: </h1>
 
+<p> View all the projects that are currently going on YallaDevelop. We host projects from the East to the West. Creative websites and innovative projects are  what we are host and raise fund for! </p>
+<p> It is here on YallaDevelop, that developers, content creators and funders all get together to produce out-of-the box ideas and uniques projects. Explore the hub of innovtions within applications and websites to enrich yourself with our smart projects owners' ideas. <p>
+
+<ul>
 {% for project in projects %}
     <a href="/project/{{project.id}}"><i class="fa fa-cog"></i> {{ project.name }}</a><br />
 {% endfor %}
-
+</ul>
 <br/><br/>
 
 {% include "yalladevelop/footer.html" %}

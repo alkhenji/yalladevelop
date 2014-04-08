@@ -1,13 +1,21 @@
 {% include "yalladevelop/header.html" %}
 
-<h1>Contact Us:</h1>
-
-<h2>Form</h2>
+<h2>Contact Us:</h2>
+<p>
+	As a community builder, we are hihly intereated in your suggestions, ideas and comments. So please fill the below form to communicate with us.<br/>
+	We highly encourage you to go into details with your message to be able to better exaplin it and for us to understand it better. Fill in:<br/>
+	Name: We can address you personally the next time we communicate with you.<br/>
+	Subject: It helps us understand the content of your message and better sort suggestions, ideas, comments and feedback accoridngly.<br/>
+	Message: Explain your idea, suggestion, comment or compplain briefly and in details. The more we understand you the better we can help you.<br/>
+	Sender: Include your email so that we can reply directly to you and let you know that we've fixed your problem, improve according to your suggestions or we deployed your idea!<br/>
+</p>
+<ul>
 	<form action="/contact/" method="post">
 		{% csrf_token %}
 		{{ form.as_p }}
 		<input type="submit" value="Submit" />
 	</form>
 	<br/>
+</ul>
 
 {% include "yalladevelop/footer.html" %}
