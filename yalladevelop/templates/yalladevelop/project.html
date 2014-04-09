@@ -39,6 +39,42 @@
 	<a class="btn btn-success" href="/project/{{project.id}}/donate">I Will Donate!</a>
 {% endif %}
 
+
+<br/><br/><br/>
+<div class="comment_box">
+	<legend>Discussion: </legend>
+	<ul>
+		{% if comments %}
+			<ul>
+				{% for c in comments %}
+				<li>
+					<div class="commentUser">{{c.username}} says:</div>
+					<div class="comment">{{c.comment}}</div>
+				</li>
+				{% endfor %}
+			</ul><br/>
+		{% else %}
+			<p>Be the first to reflect upon this project!</p><br/>
+		{% endif %}
+		
+		{% if logged_in %}
+			<div id="comment_form">
+				<form action="/post_comment/" method="POST">
+					Logged in as: {{userProfile.name}}
+					<input hidden name="username" value="{{username}}">
+					<input hidden name="userId" value="{{userProfile.id}}">
+					<input hidden name="projectId" value="{{project.id}}">
+					<textarea name="comment" class="form-control" id="textArea" rows="4" cols="60"></textarea><br/>
+					<input class="btn btn-info" type="submit" value="Post Comment" />
+					{% csrf_token %}
+				</form>
+			</div>
+		{% else %}
+			<p>Please Login to be able to comment</p>
+		{% endif %}
+	</ul>
+</div>
+
 <br/>
 <br/>
 

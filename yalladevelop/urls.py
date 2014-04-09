@@ -32,6 +32,8 @@ urlpatterns = patterns('',
 	
 	url(r'^project/(?P<project_id>\d+)/edit$', views.editProject, name='editProject'),
 	
+	url(r'^post_comment/$', views.postComment, name='postComment'),
+	
 	# Static Pages Dispatcher
 	url(r'^about/$', views.about, name="about"),
 	url(r'^contact/$', views.contact, name="contact"),

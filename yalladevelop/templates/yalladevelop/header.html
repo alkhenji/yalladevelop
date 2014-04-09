@@ -69,7 +69,9 @@
 				<li><a href="/profile_settings">Profile Settings</a></li>
 				<li class="divider"></li>
 				<li class="dropdown-header">Projects</li>
-				<li><a href="/addproject">Create Project</a></li>
+				{% if not is_company %}
+					<li><a href="/addproject">Create Project</a></li>
+				{% endif %}
 				<li><a href="/track">Track Projects</a></li>
 				<li class="divider"></li>
 				<li class="dropdown-header">Login/Logout</li>

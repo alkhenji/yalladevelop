@@ -10,6 +10,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Permission
 from yalladevelop.forms import *
+from django.utils.html import escape
 
 # Authentication and Users
 from django.contrib.auth import login, logout, authenticate
@@ -19,7 +20,7 @@ from django.core.context_processors import csrf
 from django.template import RequestContext
 
 # Models
-from yalladevelop.models import Project, Skill, UserProfile, Like
+from yalladevelop.models import *
 
 # Mailer
 from django.core.mail import send_mail
@@ -75,10 +76,12 @@ def rankings(request):
 
 
 def index(request):
-	d = getVariables(request,dictionary={'page_name': "Home"})	
-	d['featured_projects'] = Project.objects.filter(is_featured=True).order_by('?')[:3]
-	d['hot_projects'] = Project.objects.all().order_by('-likes')[:3] # how many projects
-	d['random_member'] = UserProfile.objects.filter(is_company=False).order_by('?')[:1][0]
+	d = getVariables(request,dictionary={'page_name': "Home"})
+	if Project.objects.all():
+		d['featured_projects'] = Project.objects.filter(is_featured=True).order_by('?')[:3]
+		d['hot_projects'] = Project.objects.all().order_by('-likes')[:3] # how many projects
+	if UserProfile.objects.all():
+		d['random_member'] = UserProfile.objects.filter(is_company=False).order_by('?')[:1][0]
 	return render(request, 'yalladevelop/index.html', d)
 
 @login_required
@@ -132,35 +135,6 @@ def editProject(request,project_id):
 		initial = {'project_name':project.name,'description':project.description}
 		d['form'] = EditForm(initial=initial)
 	return render(request, 'yalladevelop/project_settings.html', d)
-
-# @login_required
-# def editProject(request,project_id):
-# 	try:
-# 		project = Project.objects.get(id=project_id)
-# 	except Exception:
-# 		return HttpResponseRedirect('/')
-# 	
-# 	if request.user.id == project.user_id:
-# 		
-# 		if request.method == "POST":
-# 			form = Editorm(request.POST)
-# 			if form.is_valid():
-# 				name = form.cleaned_data['project_name']
-# 				description = form.cleaned_data['description']
-# 				url = '/project/%s' % str(p.id)
-# 				return HttpResponseRedirect(url) # return to edited project page
-# 			else:
-# 				form = EditForm()
-# 				d['form'] = form
-# 				return render(request, 'yalladevelop/editproject.html', d)
-# 			form = EditForm()
-# 			d['form'] = form
-# 		return render(request, 'yalladevelop/editproject.html', d)
-# 
-# 
-# 			return HttpResponseRedirect('')
-# 	else:
-# 		return HttpResponseRedirect('/')
 	
 def showProject(request,project_id=-1):
 	d = getVariables(request,dictionary={'page_name': "Browse Projects"})
@@ -175,7 +149,7 @@ def showProject(request,project_id=-1):
 			d['helpers'] = project.helpers.all()
 			d['funders'] = project.funders.all()
 			d['complete'] = project.money_collected >= project.target_money
-			
+			d['comments'] = Comment.objects.filter(project_id=project.id)
 			if (d['complete']) and (not project.completed): #fixes any un-noticed payments
 				project.completed = True
 				project.save()
@@ -186,6 +160,8 @@ def showProject(request,project_id=-1):
 				projectLiked = Like.objects.filter(project_id=project.id,user_id=user.id)
 				
 				d['my_project'] = project.user_id == request.user.id
+				d['userProfile'] = up
+				d['username'] = user.username
 				
 				if projectLiked:
 					d['liked'] = True
@@ -261,6 +237,9 @@ def signup_company(request):
 			new_user = authenticate(username=request.POST['username'],password=request.POST['password1'])
 			login(request, new_user)
 			return HttpResponseRedirect(reverse('index'))
+		# else:
+			# print form.name.errors
+			# pass
 	else:
 		form = CompanyCreateForm()
 	return render(request, "yalladevelop/signup.html", {'form': form,'usersignup':False})
@@ -410,17 +389,9 @@ def track(request):
 
 def explore(request):
 	d = getVariables(request)
-	projects = Project.objects.all().order_by('?')[:10]
-	# projects = Project.objects.all()
-	# paginator = Paginator(projects, 2) # Show 25 projects per page
-	# page = request.GET.get('page')
-	# try:
-	# 	projects = paginator.page(page)
-	# except PageNotAnInteger:
-	# 	projects = paginator.page(1)
-	# except EmptyPage:
-	# 	projects = paginator.page(paginator.num_pages)
-	d['projects'] = projects
+	if Project.objects.all():
+		projects = Project.objects.all().order_by('?')[:10]
+		d['projects'] = projects
 	return render_to_response('yalladevelop/explore.html',d)
 
 def faq(request):
@@ -516,15 +487,22 @@ def search_skills(request,skill_id=0):
 
 
 # -------------------- Functions -------------------------
-# def postComment(request,image_id=1):
-# 	name = request.user.username
-# 	comment = request.GET['comment']
-# 	gallery_owner = int(Entry.objects.get(id=image_id).userId)
-# 	userID = request.user.id
-# 	c = Comment(username=name, comment=comment, imageId=image_id, userId=userID)
-# 	c.save()
-# 	url = "/webgallery/user/"+str(gallery_owner)+"/image/"+str(image_id)+"/"
-# 	return HttpResponseRedirect(url)
+@login_required
+def postComment(request):
+	post = request.POST
+	comment = escape(post['comment'])
+	userId = post['userId']
+	username = post['username']
+	project_id = post['projectId']
+	project_owner = Project.objects.get(id=project_id).user_id
+	
+	if len(comment)>1:
+		newComment = Comment(project_id=project_id,comment=comment,username=username,user_id=userId,project_owner=project_owner)
+		newComment.save()
+	url = "/project/"+str(project_id)+"/"
+	return HttpResponseRedirect(url)
+	
+	
 
 @login_required
 def likeProject(request,project_id):

@@ -24,14 +24,6 @@ class Skill(models.Model):
 	def __unicode__(self):
 		return self.name
 
-class Comment(models.Model):
-	project_id = models.IntegerField()
-	project_owner_id = models.IntegerField()
-	name = models.CharField(max_length=200)
-	comment = models.CharField(max_length=200)
-	def __unicode__(self):
-		return self.username
-
 class Like(models.Model):
 	project_id = models.IntegerField()
 	user_id = models.IntegerField()
@@ -56,6 +48,16 @@ class UserProfile(models.Model):
 	# funded = models.ManyToManyField(Project)
 	def __unicode__(self):
 		return self.name
+
+
+class Comment(models.Model):
+	project_id = models.IntegerField()
+	project_owner = models.IntegerField() # id of userProfile of the owner
+	username = models.CharField(max_length=200)
+	user_id = models.IntegerField() # id of the comment poster
+	comment = models.CharField(max_length=200)
+
+	
 
 
 class Project(models.Model):
