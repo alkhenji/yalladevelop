@@ -219,6 +219,7 @@ def signup_user(request):
 	if request.method == 'POST':
 		# form = UserCreationForm(request.POST)
 		form = UserCreateForm(request.POST)
+		print request.FILES
 		if form.is_valid():
 			new_user = form.save()
 			new_user = authenticate(username=request.POST['username'],password=request.POST['password1'])
@@ -418,7 +419,6 @@ def terms(request):
 	d = getVariables(request)
 	return render(request, 'yalladevelop/terms.html', {})
 
-
 def test(request):
 	d = getVariables(request)
 	return render(request, 'yalladevelop/111.html', {})
@@ -592,4 +592,22 @@ def donate(request,project_id=False):
 		d['form'] = form
 	return render(request, "yalladevelop/donate.html", d)
 
-
+@csrf_exempt
+def user_upload(request): # function that uploads the images to the database
+	print request.FILES
+	# image = Image... To be continued..
+	# acceptedTypes = ["jpg","jpeg","png","gif"]
+	# mimetype = str(request.FILES["Filedata"]).split(".")[-1]
+	# name = str(request.FILES["Filedata"]).split(".")[0]
+	# user = request.user
+	# logged_in = request.user.is_authenticated()
+	# if mimetype in acceptedTypes: #add the image to the library if it is accepted
+	# 	original = request.FILES["Filedata"]
+	# 	modified = request.FILES["Filedata"]
+	# 	event_id = event_id
+	# 	image = Image(original=original, modified=modified,
+	# 				  event_id=event_id, name=name,
+	# 				  mimetype=mimetype)
+	# 	image.save()
+	response = HttpResponseRedirect("/user-signup/")
+	return response

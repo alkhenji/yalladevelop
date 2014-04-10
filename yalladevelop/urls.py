@@ -34,6 +34,8 @@ urlpatterns = patterns('',
 	
 	url(r'^post_comment/$', views.postComment, name='postComment'),
 	
+	url(r'^user_upload/$', views.user_upload, name='user_upload'),
+	
 	# Static Pages Dispatcher
 	url(r'^about/$', views.about, name="about"),
 	url(r'^contact/$', views.contact, name="contact"),

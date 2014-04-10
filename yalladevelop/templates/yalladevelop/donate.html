@@ -16,8 +16,8 @@
 	
 	<h6>Project Name: {{ project.name }}</h6>
 	<h6>Project Owned By: {{ owner }}</h6>
-	{{form.as_p}}
-	<button onClick="confirm('Are you sure this is the correct amount?')"class="btn btn-success" type="submit">Donate</button>
+	<div id="donate_form">{{form.as_p}}</div>
+	<button onClick="confirm('Are you sure this is the correct amount?')"class="btn btn-success" type="submit">Donate</button
 </form>
 <br/>
 

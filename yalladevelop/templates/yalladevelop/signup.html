@@ -1,3 +1,5 @@
+{% load staticfiles %}
+
 {% include "yalladevelop/header.html" %}
 
 {% if usersignup %}
@@ -9,10 +11,19 @@
 		YallaDevelop could really help improve your community reputation and help you to raise to the top ranking of contributing companies. Join YallaDevelop and fund the projects that are innovative and beneficial to you and the community. <br/><br/>
 		Unfortunately, companies can't post projects for funding, we are looking forward to improve the chances of those in need rather than help companies. </p><br/>
 {% endif %}
+
+	<div id="user_images">
+		<form action="/user_upload/" class="dropzone" id="user_uploader">
+		  <div class="fallback">
+		    <input name="file" type="file" />
+		  </div>
+		</form>
+	</div>
+	
 	<ul>
 		<form action="" method="post">
 			{{ form.as_p }}
-			<input type="submit" value="Create Account">
+			<input class="btn btn-default" type="submit" value="Create Account">
 		</form>
 	</ul>
 		<br/>
