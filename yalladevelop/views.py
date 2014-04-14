@@ -80,6 +80,7 @@ def index(request):
 	if Project.objects.all():
 		d['featured_projects'] = Project.objects.filter(is_featured=True).order_by('?')[:3]
 		d['hot_projects'] = Project.objects.all().order_by('-likes')[:3] # how many projects
+		d['projects'] = Project.objects.filter(is_featured=True).order_by('?')[:5]
 	if UserProfile.objects.all():
 		d['random_member'] = UserProfile.objects.filter(is_company=False).order_by('?')[:1][0]
 	return render(request, 'yalladevelop/index.html', d)
@@ -295,6 +296,9 @@ def forgotPassword(request):
 				send_mail(subject,message,sender,recipients)
 				user.save()
 				return HttpResponseRedirect('/')
+		else:
+			d['form'] = form
+			return render(request, 'yalladevelop/forgotpassword.html', d)
 		form = ForgotForm()
 		d['form'] = form
 		return render(request, 'yalladevelop/forgotpassword.html', d)
@@ -318,7 +322,6 @@ def contact(request):
 			send_mail(subject,message,sender,recipients)
 			return HttpResponseRedirect('/')
 		else:
-			form = ContactForm()
 			d['form'] = form
 		return render(request, 'yalladevelop/contact.html', d)
 	else:
@@ -441,6 +444,9 @@ def profileSettings(request):
 		if form.is_valid():
 			form.update(d)
 			return redirect("/profile/" + str(request.user.id))
+		else:
+			d['form'] = form
+			return render(request, 'yalladevelop/profile_settings.html', d)
 	else:
 		u = request.user
 		up = d['user_profile']
@@ -456,7 +462,6 @@ def profileSettings(request):
 					initial[letter(skill.id)] = True
 			d['form'] = UserUpdateForm(initial=initial)
 	return render(request, 'yalladevelop/profile_settings.html', d)
-
 
 def search_skills(request,skill_id=0):
 	d = getVariables(request)

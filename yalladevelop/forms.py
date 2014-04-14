@@ -6,16 +6,16 @@ from yalladevelop.models import Skill, UserProfile
 from django.core.mail import send_mail
 
 class ContactForm(forms.Form):
-	name = forms.CharField(max_length=100)
-	email = forms.EmailField()
-	subject = forms.CharField(max_length=100)
-	message = forms.CharField()
+	name = forms.CharField(max_length=100,required=True)
+	email = forms.EmailField(required=True)
+	subject = forms.CharField(max_length=100,required=True)
+	message = forms.CharField(required=True)
 	cc_myself = forms.BooleanField(label="CC Myself?",required=False)
 
 
 class ForgotForm(forms.Form):
 	email = forms.EmailField(required=False)
-				
+
 
 class DonateForm(forms.Form):
 	amount = forms.IntegerField(required=True)
@@ -43,14 +43,11 @@ class EditForm(forms.Form):
 		project.name = self.cleaned_data['project_name']
 		project.description = self.cleaned_data['description']
 		project.save()
-		
-
-		
 
 
 class UserCreateForm(UserCreationForm):
-	name = forms.CharField(max_length=200,help_text="First and Last name please.")
-	email = forms.EmailField(help_text="Enter your email address",required=True)
+	name = forms.CharField(max_length=200,help_text="Your full name")
+	email = forms.EmailField(required=True)
 	a = forms.BooleanField(label="Python, Django",required=False)
 	b = forms.BooleanField(label="Java, Javascript",required=False)
 	c = forms.BooleanField(label="C, C++, C#", required=False)
@@ -186,8 +183,8 @@ class UserUpdateForm(forms.Form):
 
 
 class CompanyCreateForm(UserCreationForm):
-	name = forms.CharField(max_length=200,help_text="Company's Name.")
-	email = forms.EmailField(help_text="Email Address.",required=True)
+	name = forms.CharField(max_length=200,help_text="Company's Name")
+	email = forms.EmailField(required=True)
 	
 	class Meta:
 		model = User
